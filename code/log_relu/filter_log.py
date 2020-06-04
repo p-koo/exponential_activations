@@ -1,0 +1,84 @@
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow import keras
+import helper
+from tfomics import utils, explain, metrics
+
+import cnn_deep_log
+
+#------------------------------------------------------------------------------------------------
+
+num_trials = 10
+
+# save path
+results_path = utils.make_directory('../results', 'log')
+params_path = utils.make_directory(results_path, 'model_params')
+save_path = utils.make_directory(results_path, 'conv_filters')
+
+#------------------------------------------------------------------------------------------------
+
+activations = ['log_relu', 'relu']
+l2_norm = [True, False]
+model_name = 'cnn-deep'
+
+# load dataset
+data_path = '../data/synthetic_dataset.h5'
+data = helper.load_dataset(data_path)
+x_train, y_train, x_valid, y_valid, x_test, y_test = data
+
+for activation in ['log_relu', 'relu']:
+    for l2_norm in [True, False]:
+        for trial in range(num_trials):
+            keras.backend.clear_session()
+            
+            # load model
+            model = cnn_deep_log.model(activation, l2_norm)
+
+            name = model_name+'_'+activation
+
+            if l2_norm:
+                name = name + '_l2'
+            name = name + '_' + str(trial)
+            print('model: ' + name)
+
+            # set up optimizer and metrics
+            auroc = keras.metrics.AUC(curve='ROC', name='auroc')
+            aupr = keras.metrics.AUC(curve='PR', name='aupr')
+            optimizer = keras.optimizers.Adam(learning_rate=0.001)
+            loss = keras.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0)
+            model.compile(optimizer=optimizer,
+                          loss=loss,
+                          metrics=['accuracy', auroc, aupr])
+
+
+            es_callback = keras.callbacks.EarlyStopping(monitor='val_auroc', #'val_aupr',#
+                                                        patience=20, 
+                                                        verbose=1, 
+                                                        mode='max', 
+                                                        restore_best_weights=False)
+            reduce_lr = keras.callbacks.ReduceLROnPlateau(monitor='val_auroc', 
+                                                          factor=0.2,
+                                                          patience=5, 
+                                                          min_lr=1e-7,
+                                                          mode='max',
+                                                          verbose=1) 
+
+            # save model
+            weights_path = os.path.join(params_path, name+'.hdf5')
+            model.load_weights(weights_path)
+
+            #results = model.evaluate(x_test, y_test, batch_size=512)      
+                      
+            # get 1st convolution layer filters
+            layer = 3
+            fig, W, logo = explain.plot_filers(model, x_test, layer=layer, threshold=0.5, 
+                                               window=20, num_cols=8, figsize=(30,5))
+            outfile = os.path.join(save_path, name+'.pdf')
+            fig.savefig(outfile, format='pdf', dpi=200, bbox_inches='tight')
+            plt.close()
+            
+            # clip filters about motif to reduce false-positive Tomtom matches 
+            W_clipped = utils.clip_filters(W, threshold=0.5, pad=3)
+            output_file = os.path.join(save_path, name+'.meme')
+            utils.meme_generate(W_clipped, output_file) 
