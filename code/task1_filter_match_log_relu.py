@@ -9,7 +9,7 @@ import pandas as pd
 from tensorflow import keras
 import helper
 from tfomics import utils
-import cnn_deep_log
+from model_zoo import cnn_deep_log
 
 #------------------------------------------------------------------------------------------------
 

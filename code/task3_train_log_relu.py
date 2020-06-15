@@ -6,7 +6,7 @@ from tensorflow import keras
 import helper
 from tfomics import utils, metrics, explain
 
-import task2_cnn_deep_log
+from model_zoo import task3_cnn_deep_log
 
 #------------------------------------------------------------------------
 
@@ -15,12 +15,12 @@ l2_norm = [True, False]
 model_name = 'cnn-deep'
 
 num_trials = 5
-results_path = utils.make_directory('../results', 'synthetic_code_log')
+results_path = utils.make_directory('../results', 'task3')
 params_path = utils.make_directory(results_path, 'model_params')
 
 #------------------------------------------------------------------------
 
-# load data
+# load dat3
 data_path = '../data/Synthetic_code_dataset.h5'
 data = helper.load_dataset(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
@@ -33,7 +33,7 @@ X_model = test_model[true_index][:500]
 
 #------------------------------------------------------------------------
 
-file_path = os.path.join(results_path, 'performance_synthetic_code_log_relu.tsv')
+file_path = os.path.join(results_path, 'task3_classification_performance_log_relu.tsv')
 with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 

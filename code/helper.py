@@ -97,10 +97,6 @@ def load_model(model_name, activation='relu', input_shape=200):
         from model_zoo import cnn_deep
         model = cnn_deep.model(activation)
 
-    elif model_name == 'cnn-deep-log':
-        from model_zoo import cnn_deep_log
-        model = cnn_deep_log.model(activation, l2)
-
     elif model_name == 'basset':
         from model_zoo import basset
         model = basset.model(activation)

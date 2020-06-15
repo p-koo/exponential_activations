@@ -5,7 +5,7 @@ from tensorflow import keras
 import helper
 from tfomics import utils, explain
 
-import task2_cnn_deep_log
+from model_zoo import task3_cnn_deep_log
 #------------------------------------------------------------------------
 
 activations = ['log_relu', 'relu']
@@ -13,7 +13,7 @@ l2_norm = [True, False]
 model_name = 'cnn-deep'
 
 num_trials = 5
-results_path = utils.make_directory('../results', 'synthetic_code_log')
+results_path = utils.make_directory('../results', 'task3')
 params_path = utils.make_directory(results_path, 'model_params')
 
 #------------------------------------------------------------------------
