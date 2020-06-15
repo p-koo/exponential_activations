@@ -7,7 +7,7 @@ from tfomics import utils, explain, metrics
 
 #------------------------------------------------------------------------------------------------
 
-num_trials = 10
+num_trials = 3
 model_names = ['cnn-deep', 'cnn-2', 'cnn-50']
 activations = ['relu', 'exponential', 'sigmoid', 'tanh', 'softplus', 'linear', 'elu',
                'shift_scale_relu', 'shift_scale_tanh', 'shift_scale_sigmoid', 'exp_relu', 
@@ -26,8 +26,8 @@ data = helper.load_dataset(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 # save results to file
-save_path = os.path.join(results_path, 'task1_classification_performance.tsv')
-with open(save_path, 'w') as f:
+file_path = os.path.join(results_path, 'task1_classification_performance.tsv')
+with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
     results = {}

@@ -11,37 +11,37 @@ from tensorflow import keras
 
 
 
-def load_data(file_path, reverse_compliment=False):
+def load_dataset(file_path, reverse_compliment=False):
 
     # load dataset
     dataset = h5py.File(file_path, 'r')
-    X_train = np.array(dataset['X_train']).astype(np.float32)
-    Y_train = np.array(dataset['Y_train']).astype(np.float32)
-    X_valid = np.array(dataset['X_valid']).astype(np.float32)
-    Y_valid = np.array(dataset['Y_valid']).astype(np.float32)
-    X_test = np.array(dataset['X_test']).astype(np.float32)
-    Y_test = np.array(dataset['Y_test']).astype(np.float32)
+    x_train = np.array(dataset['X_train']).astype(np.float32)
+    y_train = np.array(dataset['Y_train']).astype(np.float32)
+    x_valid = np.array(dataset['X_valid']).astype(np.float32)
+    y_valid = np.array(dataset['Y_valid']).astype(np.float32)
+    x_test = np.array(dataset['X_test']).astype(np.float32)
+    y_test = np.array(dataset['Y_test']).astype(np.float32)
 
     x_train = np.squeeze(x_train)
     x_valid = np.squeeze(x_valid)
     x_test = np.squeeze(x_test)
 
     if reverse_compliment:
-        X_train_rc = X_train[:,::-1,:][:,:,::-1]
-        X_valid_rc = X_valid[:,::-1,:][:,:,::-1]
-        X_test_rc = X_test[:,::-1,:][:,:,::-1]
+        x_train_rc = x_train[:,::-1,:][:,:,::-1]
+        x_valid_rc = x_valid[:,::-1,:][:,:,::-1]
+        x_test_rc = x_test[:,::-1,:][:,:,::-1]
         
-        X_train = np.vstack([X_train, X_train_rc])
-        X_valid = np.vstack([X_valid, X_valid_rc])
-        X_test = np.vstack([X_test, X_test_rc])
+        x_train = np.vstack([x_train, x_train_rc])
+        x_valid = np.vstack([x_valid, x_valid_rc])
+        x_test = np.vstack([x_test, x_test_rc])
         
-        y_train = np.vstack([Y_train, Y_train])
-        y_valid = np.vstack([Y_valid, Y_valid])
-        y_test = np.vstack([Y_test, Y_test])
+        y_train = np.vstack([y_train, y_train])
+        y_valid = np.vstack([y_valid, y_valid])
+        y_test = np.vstack([y_test, y_test])
         
-    x_train = X_train.transpose([0,2,1])
-    x_valid = X_valid.transpose([0,2,1])
-    x_test = X_test.transpose([0,2,1])
+    x_train = x_train.transpose([0,2,1])
+    x_valid = x_valid.transpose([0,2,1])
+    x_test = x_test.transpose([0,2,1])
 
     return x_train, y_train, x_valid, y_valid, x_test, y_test
 
@@ -87,15 +87,15 @@ def load_model(model_name, activation='relu', input_shape=200):
 
     elif model_name == 'cnn-deep':
         from model_zoo import cnn_deep
-        model = cnn_deep_model.model(activation, input_shape)
+        model = cnn_deep.model(activation, input_shape)
 
     elif model_name == 'cnn-shallow':
         from model_zoo import cnn_local
         model = cnn_local.model(activation)
 
-    elif model_name == 'cnn-deep':
-        from model_zoo import cnn_deep
-        model = cnn_deep.model(activation)
+    elif model_name == 'cnn-dist':
+        from model_zoo import cnn_dist
+        model = cnn_dist.model(activation)
 
     elif model_name == 'basset':
         from model_zoo import basset

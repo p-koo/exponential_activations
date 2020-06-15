@@ -8,7 +8,7 @@ from tfomics import utils, metrics
 
 #------------------------------------------------------------------------
 
-num_trials = 10
+num_trials = 3
 model_names = ['cnn-dist', 'cnn-local']
 activations = ['relu', 'exponential', 'sigmoid', 'tanh', 'softplus', 'linear', 'elu',
                'shift_scale_relu', 'shift_scale_tanh', 'shift_scale_sigmoid', 'exp_relu']
