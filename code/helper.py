@@ -89,7 +89,7 @@ def load_model(model_name, activation='relu', input_shape=200):
         from model_zoo import cnn_deep
         model = cnn_deep.model(activation, input_shape)
 
-    elif model_name == 'cnn-shallow':
+    elif model_name == 'cnn-local':
         from model_zoo import cnn_local
         model = cnn_local.model(activation)
 

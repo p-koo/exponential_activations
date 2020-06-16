@@ -39,7 +39,7 @@ for activation in ['log_relu', 'relu']:
             keras.backend.clear_session()
                 
             # load model
-            model = task2_cnn_deep_log.model(activation, l2_norm)
+            model = task3_cnn_deep_log.model(activation, l2_norm)
 
             base_name = model_name+'_'+activation
 

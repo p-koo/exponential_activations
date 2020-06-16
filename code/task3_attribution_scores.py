@@ -7,14 +7,14 @@ from tfomics import utils, explain
 
 #------------------------------------------------------------------------
 
-num_trials = 10
+num_trials = 3
 model_names = ['cnn-dist', 'cnn-local']
 activations = ['relu', 'exponential', 'sigmoid', 'tanh', 'softplus', 'linear', 'elu',
                'shift_scale_relu', 'shift_scale_tanh', 'shift_scale_sigmoid', 'exp_relu']
 
 
 results_path = os.path.join('../results', 'task3')
-params_path = os.path.join(results_path, 'params')
+params_path = os.path.join(results_path, 'model_params')
 save_path = utils.make_directory(results_path, 'scores')
 
 #------------------------------------------------------------------------
@@ -27,8 +27,8 @@ x_train, y_train, x_valid, y_valid, x_test, y_test = data
 # load ground truth values
 test_model = helper.load_synthetic_models(data_path, dataset='test')
 true_index = np.where(y_test[:,0] == 1)[0]
-X = x_test[true_index][:500]
-X_model = test_model[true_index][:500]
+X = x_test[true_index][:100]
+X_model = test_model[true_index][:100]
 
 #------------------------------------------------------------------------
 
@@ -44,8 +44,8 @@ for model_name in model_names:
             keras.backend.clear_session()
             
             # load model
-            model, name = helper.load_model(model_name, activation=activation)
-            name = name+'_'+activation+'_'+str(trial)
+            model = helper.load_model(model_name, activation)
+            name = model_name+'_'+activation+'_'+str(trial)
             print('model: ' + name)
 
             # compile model
@@ -71,8 +71,8 @@ for model_name in model_names:
 
             # interpretability performance with deepshap 
             print('shap maps')
-            shap_scores.append(explain.deepshap(model, X, class_index=0, 
-                                           num_background=10, reference='shuffle'))
+            #shap_scores.append(explain.deepshap(model, X, class_index=0, 
+            #                               num_background=10, reference='shuffle'))
 
         # save results
         file_path = os.path.join(save_path, model_name+'_'+activation+'.pickle')

@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from six.moves import cPickle
 import matplotlib.pyplot as plt
 from tensorflow import keras
 import helper
@@ -56,16 +57,17 @@ with open(file_path, 'w') as f:
                                           decay_patience=5, decay_factor=0.2)
 
                 # fit model
-                history = model.fit(x_train, y_train, 
-                                    epochs=100,
-                                    batch_size=100, 
-                                    shuffle=True,
-                                    validation_data=(x_valid, y_valid), 
-                                    callbacks=callbacks)
+                #history = model.fit(x_train, y_train, 
+                #                    epochs=100,
+                #                    batch_size=100, 
+                #                    shuffle=True,
+                #                    validation_data=(x_valid, y_valid), 
+                #                    callbacks=callbacks)
 
                 # save model
                 weights_path = os.path.join(params_path, name+'.hdf5')
-                model.save_weights(weights_path)
+                #model.save_weights(weights_path)
+                model.load_weights(weights_path)
                          
                 # get 1st convolution layer filters
                 fig, W, logo = explain.plot_filers(model, x_test, layer=3, threshold=0.5, 

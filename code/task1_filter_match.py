@@ -33,7 +33,7 @@ motifnames = [ '','arid3', 'cebpb', 'fosl1', 'gabpa', 'mafk', 'max', 'mef2a', 'n
 #----------------------------------------------------------------------------------------------------
 
 
-num_trials = 10
+num_trials = 3
 model_names = ['cnn-deep', 'cnn-2', 'cnn-50']
 activations = ['relu', 'exponential', 'sigmoid', 'tanh', 'softplus', 'linear', 'elu',
                'shift_scale_relu', 'shift_scale_tanh', 'shift_scale_sigmoid', 'exp_relu', 
@@ -59,7 +59,6 @@ with open(os.path.join(results_path, 'task1_filter_results.tsv'), 'w') as f:
                 try:
                     file_path = os.path.join(save_path, model_name+'_'+activation+'_'+str(trial), 'tomtom.tsv')
                     best_qvalues, best_match, min_qvalue, match_fraction, match_any  = helper.match_hits_to_ground_truth(file_path, motifs, size)
-
                     # store results
                     trial_qvalue.append(min_qvalue)
                     trial_match_fraction.append(match_fraction)

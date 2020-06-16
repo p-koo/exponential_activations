@@ -28,12 +28,16 @@ data = helper.load_dataset(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 # save results to file
-save_path = os.path.join(results_path, 'task1_classification_performance_log.tsv')
-with open(save_path, 'w') as f:
+file_path = os.path.join(results_path, 'task1_classification_performance_log.tsv')
+with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
     for activation in ['log_relu', 'relu']:
         for l2_norm in [True, False]:
+            trial_roc_mean = []
+            trial_roc_std = []
+            trial_pr_mean = []
+            trial_pr_std = []
             for trial in range(num_trials):
                 keras.backend.clear_session()
                 
