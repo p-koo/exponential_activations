@@ -14,14 +14,14 @@ activations = ['relu', 'exponential', 'sigmoid', 'tanh', 'softplus', 'linear', '
 
 
 results_path = os.path.join('../results', 'task3')
-params_path = os.path.join(results_path, 'params')
+params_path = os.path.join(results_path, 'model_params')
 save_path = utils.make_directory(results_path, 'scores')
 
 #------------------------------------------------------------------------
 
 # load data
-data_path = '../data/Synthetic_code_dataset.h5'
-data = helper.load_dataset(data_path)
+data_path = '../data/synthetic_code_dataset.h5'
+data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 # load ground truth values
@@ -35,7 +35,6 @@ X_model = test_model[true_index][:500]
 for model_name in model_names:
     for activation in activations:
         
-
         saliency_scores = []
         mut_scores = []
         integrated_scores = []
@@ -44,8 +43,8 @@ for model_name in model_names:
             keras.backend.clear_session()
             
             # load model
-            model, name = helper.load_model(model_name, activation=activation)
-            name = name+'_'+activation+'_'+str(trial)
+            model = helper.load_model(model_name, activation=activation)
+            name = model_name+'_'+activation+'_'+str(trial)
             print('model: ' + name)
 
             # compile model
@@ -58,7 +57,7 @@ for model_name in model_names:
             # interpretability performance with saliency maps
             print('saliency maps')
             saliency_scores.append(explain.saliency(model, X, class_index=0, layer=-1))
-
+            """
             # interpretability performance with mutagenesis 
             print('mutagenesis maps')
             mut_scores.append(explain.mutagenesis(model, X, class_index=0, layer=-1))
@@ -73,11 +72,11 @@ for model_name in model_names:
             print('shap maps')
             shap_scores.append(explain.deepshap(model, X, class_index=0, 
                                            num_background=10, reference='shuffle'))
-
+            """
         # save results
         file_path = os.path.join(save_path, model_name+'_'+activation+'.pickle')
         with open(file_path, 'wb') as f:
             cPickle.dump(np.array(saliency_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            cPickle.dump(np.array(mut_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            cPickle.dump(np.array(integrated_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            cPickle.dump(np.array(shap_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
+            #cPickle.dump(np.array(mut_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
+            #cPickle.dump(np.array(integrated_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
+            #cPickle.dump(np.array(shap_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)

@@ -19,8 +19,8 @@ params_path = utils.make_directory(results_path, 'model_params')
 #------------------------------------------------------------------------
 
 # load data
-data_path = '../data/Synthetic_code_dataset.h5'
-data = helper.load_dataset(data_path)
+data_path = '../data/synthetic_code_dataset.h5'
+data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 #------------------------------------------------------------------------

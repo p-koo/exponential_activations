@@ -65,7 +65,7 @@ def residual_block(input_layer, filter_size, activation='relu', l2=None):
     else:
         l2 = None
 
-    num_filters = inputs.shape.as_list()[-1]  
+    num_filters = input_layer.shape.as_list()[-1]  
 
     nn = keras.layers.Conv1D(filters=num_filters,
                              kernel_size=filter_size,
@@ -100,7 +100,7 @@ def dilated_residual_block(input_layer, filter_size, num_dilation=2, activation=
     else:
         l2 = None
 
-    num_filters = inputs.shape.as_list()[-1]  
+    num_filters = input_layer.shape.as_list()[-1]  
 
     dilation_rate = 1
     nn = keras.layers.Conv1D(filters=num_filters,
@@ -139,7 +139,7 @@ def dense_residual_block(input_layer, num_units, activation='relu', l2=None):
     else:
         l2 = None
 
-    num_units = inputs.shape.as_list()[-1]  
+    num_units = input_layer.shape.as_list()[-1]  
 
     nn = keras.layers.Dense(num_units,
                            activation=None,

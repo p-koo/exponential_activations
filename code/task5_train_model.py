@@ -9,7 +9,7 @@ from tfomics import utils, metrics, explain
 #------------------------------------------------------------------------
 
 model_names = ['residualbind'] 
-activations = ['exponential', 'relu']#
+activations = ['exponential', 'relu']
 
 results_path = utils.make_directory('../results', 'task5')
 params_path = utils.make_directory(results_path, 'model_params')
@@ -19,9 +19,6 @@ params_path = utils.make_directory(results_path, 'model_params')
 file_path = '../data/ZBED2_400_h3k27ac.h5' 
 data = helper.load_data(file_path, reverse_compliment=True)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
-
-true_index = np.where(y_test[:,0] == 1)[0]
-X = x_test[true_index][:500]
 
 #------------------------------------------------------------------------
 
@@ -65,7 +62,9 @@ with open(file_path, 'w') as f:
             # print results to file
             f.write("%s\t%.3f\t%.3f\n"%(name, mean_vals[1], mean_vals[2]))
 
-            # calculate saliency
+            # calculate saliency on a subset of data 
+            true_index = np.where(y_test[:,0] == 1)[0]
+            X = x_test[true_index][:500]
             results[name] = explain.saliency(model, X, class_index=0, layer=-1)
 
 # save results

@@ -201,7 +201,7 @@ def plot_filers(model, x_test, layer=3, threshold=0.5, window=20, num_cols=8, fi
 
     intermediate = keras.Model(inputs=model.inputs, outputs=model.layers[layer].output)
     fmap = intermediate.predict(x_test)
-    W, support = activation_pwm(fmap, x_test, threshold=threshold, window=window)
+    W = activation_pwm(fmap, x_test, threshold=threshold, window=window)
 
     num_filters = len(W)
     num_widths = int(np.ceil(num_filters/num_cols))
@@ -212,11 +212,10 @@ def plot_filers(model, x_test, layer=3, threshold=0.5, window=20, num_cols=8, fi
     logos = []
     for n, w in enumerate(W):
         ax = fig.add_subplot(num_widths, num_cols, n+1)
-        #if (np.sum(w) != 0) | (np.sum(np.isnan(w) == True) > 0):
-        
+    
         # calculate sequence logo heights
-        I = np.log2(4) + np.sum(w * np.log2(w+1e-7), axis=1, keepdims=True)
-        logo = I*w
+        I = np.log2(4) + np.sum(w * np.log2(w+1e-10), axis=1, keepdims=True)
+        logo = np.maximum(I*w, 1e-7)
 
         L, A = w.shape
         counts_df = pd.DataFrame(data=0.0, columns=list('ACGT'), index=list(range(L)))
@@ -226,13 +225,14 @@ def plot_filers(model, x_test, layer=3, threshold=0.5, window=20, num_cols=8, fi
 
         logomaker.Logo(counts_df, ax=ax)
         ax = plt.gca()
+        ax.set_ylim(0,2)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.yaxis.set_ticks_position('none')
         ax.xaxis.set_ticks_position('none')
         plt.xticks([])
         plt.yticks([])
-        
+    
         logos.append(logo)
         
     return fig, W, logo
@@ -245,16 +245,16 @@ def activation_pwm(fmap, X, threshold=0.5, window=20):
     window_left = int(window/2)
     window_right = window - window_left
 
-    N,seq_length,num_dims = X.shape
+    N,L,A = X.shape
     num_filters = fmap.shape[-1]
 
-    support = []
     W = []
     for filter_index in range(num_filters):
 
         # find regions above threshold
-        try:
-            coords = np.where(fmap[:,:,filter_index] > np.max(fmap[:,:,filter_index])*threshold)
+        coords = np.where(fmap[:,:,filter_index] > np.max(fmap[:,:,filter_index])*threshold)
+
+        if len(coords) > 1:
             x, y = coords
 
             # sort score
@@ -272,14 +272,16 @@ def activation_pwm(fmap, X, threshold=0.5, window=20):
 
                 # check to make sure positions are valid
                 if (start_window > 0) & (end_window < L):
-                    seq = x_test[data_index[i], start_window:end_window, :]
+                    seq = X[data_index[i], start_window:end_window, :]
                     seq_align.append(seq)
 
             # calculate position probability matrix
-            W.append(np.mean(seq_align, axis=0))
-        except:
+            if len(seq_align) > 1:#try:
+                W.append(np.mean(seq_align, axis=0))
+            else: 
+                W.append(np.ones((window,4))/4)
+        else:
             W.append(np.ones((window,4))/4)
-    W = np.array(W)
 
-    return W, support
+    return np.array(W)
 

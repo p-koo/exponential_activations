@@ -22,12 +22,12 @@ save_path = utils.make_directory(results_path, 'conv_filters')
 
 # load dataset
 data_path = '../data/invivo_dataset.h5'
-data = helper.load_dataset(data_path)
+data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 # save results to file
-save_path = os.path.join(results_path, 'task2_classification_performance.tsv')
-with open(save_path, 'w') as f:
+file_path = os.path.join(results_path, 'task2_classification_performance.tsv')
+with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
     results = {}

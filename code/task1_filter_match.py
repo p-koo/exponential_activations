@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os, sys
 from six.moves import cPickle
 import numpy as np
@@ -10,6 +6,7 @@ import helper
 from tfomics import utils
 
 #------------------------------------------------------------------------------------------------
+# JASPAR filter indices
 
 arid3 = ['MA0151.1', 'MA0601.1', 'PB0001.1']
 cebpb = ['MA0466.1', 'MA0466.2']
@@ -56,21 +53,14 @@ with open(os.path.join(results_path, 'task1_filter_results.tsv'), 'w') as f:
             trial_coverage = []
             for trial in range(num_trials):
 
-                try:
-                    file_path = os.path.join(save_path, model_name+'_'+activation+'_'+str(trial), 'tomtom.tsv')
-                    best_qvalues, best_match, min_qvalue, match_fraction, match_any  = helper.match_hits_to_ground_truth(file_path, motifs, size)
+                file_path = os.path.join(save_path, model_name+'_'+activation+'_'+str(trial), 'tomtom.tsv')
+                best_qvalues, best_match, min_qvalue, match_fraction, match_any  = helper.match_hits_to_ground_truth(file_path, motifs, size)
 
-                    # store results
-                    trial_qvalue.append(min_qvalue)
-                    trial_match_fraction.append(match_fraction)
-                    trial_coverage.append((len(np.where(min_qvalue != 1)[0])-1)/12) # percentage of motifs that are covered
-                    trial_match_any.append(match_any)
-                except:
-                    trial_qvalue.append(0.0)
-                    trial_match_fraction.append(0.0)
-                    trial_coverage.append(0.0)
-                    trial_match_any.append(0.0)
-
+                # store results
+                trial_qvalue.append(min_qvalue)
+                trial_match_fraction.append(match_fraction)
+                trial_coverage.append((len(np.where(min_qvalue != 1)[0])-1)/12) # percentage of motifs that are covered
+                trial_match_any.append(match_any)
 
             f.write("%s\t%.3f+/-%.3f\t%.3f+/-%.3f\n"%(model_name+'_'+activation, 
                                                       np.mean(trial_match_any), 

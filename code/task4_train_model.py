@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 import helper
 from tfomics import utils, explain, metrics
-import basset, dilated_residualbind
+import basset
 
 #------------------------------------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ save_path = utils.make_directory(results_path, 'conv_filters')
 
 # load dataset
 data_path = '../data/er.h5'
-data = helper.load_basset_dataset(data_path)
+data = helper.load_basset_dataset(data_path, reverse_compliment=True)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 #------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ with open(file_path, 'w') as f:
                             epochs=100,
                             batch_size=100, 
                             shuffle=True,
-                            class_weight=class_weight, 
+                            class_weight=None, 
                             validation_data=(x_valid, y_valid), 
                             callbacks=callbacks)
 

@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from six.moves import cPickle
 import matplotlib.pyplot as plt
 from tensorflow import keras
 import helper
@@ -22,12 +23,12 @@ save_path = utils.make_directory(results_path, 'conv_filters')
 
 # load dataset
 data_path = '../data/synthetic_dataset.h5'
-data = helper.load_dataset(data_path)
+data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 # save results to file
-save_path = os.path.join(results_path, 'task1_classification_performance.tsv')
-with open(save_path, 'w') as f:
+file_path = os.path.join(results_path, 'task1_classification_performance.tsv')
+with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
     results = {}
@@ -57,7 +58,7 @@ with open(save_path, 'w') as f:
 
                 # fit model
                 history = model.fit(x_train, y_train, 
-                                    epochs=100,
+                                    epochs=50,
                                     batch_size=100, 
                                     shuffle=True,
                                     validation_data=(x_valid, y_valid), 
