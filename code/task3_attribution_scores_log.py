@@ -27,8 +27,8 @@ x_train, y_train, x_valid, y_valid, x_test, y_test = data
 # load ground truth values
 test_model = helper.load_synthetic_models(data_path, dataset='test')
 true_index = np.where(y_test[:,0] == 1)[0]
-X = x_test[true_index][:500]
-X_model = test_model[true_index][:500]
+X = x_test[true_index][:100]
+X_model = test_model[true_index][:100]
 
 #------------------------------------------------------------------------
 

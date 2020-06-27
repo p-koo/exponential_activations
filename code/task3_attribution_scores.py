@@ -27,8 +27,8 @@ x_train, y_train, x_valid, y_valid, x_test, y_test = data
 # load ground truth values
 test_model = helper.load_synthetic_models(data_path, dataset='test')
 true_index = np.where(y_test[:,0] == 1)[0]
-X = x_test[true_index][:500]
-X_model = test_model[true_index][:500]
+X = x_test[true_index][:20]
+X_model = test_model[true_index][:20]
 
 #------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ for model_name in model_names:
             # interpretability performance with saliency maps
             print('saliency maps')
             saliency_scores.append(explain.saliency(model, X, class_index=0, layer=-1))
-            """
+
             # interpretability performance with mutagenesis 
             print('mutagenesis maps')
             mut_scores.append(explain.mutagenesis(model, X, class_index=0, layer=-1))
@@ -72,11 +72,11 @@ for model_name in model_names:
             print('shap maps')
             shap_scores.append(explain.deepshap(model, X, class_index=0, 
                                            num_background=10, reference='shuffle'))
-            """
+
         # save results
         file_path = os.path.join(save_path, model_name+'_'+activation+'.pickle')
         with open(file_path, 'wb') as f:
             cPickle.dump(np.array(saliency_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            #cPickle.dump(np.array(mut_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            #cPickle.dump(np.array(integrated_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            #cPickle.dump(np.array(shap_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
+            cPickle.dump(np.array(mut_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
+            cPickle.dump(np.array(integrated_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
+            cPickle.dump(np.array(shap_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
