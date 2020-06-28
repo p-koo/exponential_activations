@@ -9,7 +9,7 @@ from tfomics import utils, explain
 
 num_trials = 10
 model_names = ['cnn-dist', 'cnn-local']
-activations = ['relu', 'exponential', 'sigmoid', 'tanh', 'softplus', 'linear', 'elu']
+activations = ['shift_scale_relu', 'shift_scale_tanh', 'shift_scale_sigmoid', 'exp_relu']
 
 
 results_path = os.path.join('../results', 'task3')
@@ -57,25 +57,7 @@ for model_name in model_names:
             print('saliency maps')
             saliency_scores.append(explain.saliency(model, X, class_index=0, layer=-1))
 
-            # interpretability performance with mutagenesis 
-            print('mutagenesis maps')
-            mut_scores.append(explain.mutagenesis(model, X, class_index=0, layer=-1))
-
-            # interpretability performance with integrated gradients
-            print('integrated gradients maps')
-            integrated_scores.append(explain.integrated_grad(model, X, class_index=0, layer=-1,
-                                                        num_background=10, num_steps=20,
-                                                        reference='shuffle'))
-
-            # interpretability performance with deepshap 
-            print('shap maps')
-            shap_scores.append(explain.deepshap(model, X, class_index=0, 
-                                           num_background=10, reference='shuffle'))
-
         # save results
         file_path = os.path.join(save_path, model_name+'_'+activation+'.pickle')
         with open(file_path, 'wb') as f:
             cPickle.dump(np.array(saliency_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            cPickle.dump(np.array(mut_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            cPickle.dump(np.array(integrated_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)
-            cPickle.dump(np.array(shap_scores), f, protocol=cPickle.HIGHEST_PROTOCOL)

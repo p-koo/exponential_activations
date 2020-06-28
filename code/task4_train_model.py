@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 import helper
 from tfomics import utils, explain, metrics
-import basset
+from model_zoo import basset
 
 #------------------------------------------------------------------------------------------------
 

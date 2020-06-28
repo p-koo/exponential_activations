@@ -2,7 +2,7 @@
 
 dirpath="../results/task1/conv_filters"
 
-for MODEL in cnn-deep_log 
+for MODEL in cnn-deep
 do
 	for ACTIVATION in log_relu relu log_relu_l2 relu_l2
 	do

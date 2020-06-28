@@ -81,17 +81,23 @@ with open(file_path, 'w') as f:
                                                               min_lr=1e-7,
                                                               mode='max',
                                                               verbose=1) 
+                if (activation == 'relu') & (l2_norm == False):
 
-                history = model.fit(x_train, y_train, 
-                                    epochs=100,
-                                    batch_size=100, 
-                                    shuffle=True,
-                                    validation_data=(x_valid, y_valid), 
-                                    callbacks=[es_callback, reduce_lr])
+                    # save model
+                    weights_path = os.path.join(params_path, name+'.hdf5')
+                    model.load_weights(weights_path)
+                    
+                else:
+                    history = model.fit(x_train, y_train, 
+                                        epochs=100,
+                                        batch_size=100, 
+                                        shuffle=True,
+                                        validation_data=(x_valid, y_valid), 
+                                        callbacks=[es_callback, reduce_lr])
 
-                # save model
-                weights_path = os.path.join(params_path, name+'.hdf5')
-                model.save_weights(weights_path)
+                    # save model
+                    weights_path = os.path.join(params_path, name+'.hdf5')
+                    model.save_weights(weights_path)
 
                 # interpretability performance 
                 saliency_scores.append(explain.saliency(model, X, class_index=0, layer=-1))

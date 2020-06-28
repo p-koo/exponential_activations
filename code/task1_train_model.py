@@ -58,7 +58,7 @@ with open(file_path, 'w') as f:
 
                 # fit model
                 history = model.fit(x_train, y_train, 
-                                    epochs=50,
+                                    epochs=100,
                                     batch_size=100, 
                                     shuffle=True,
                                     validation_data=(x_valid, y_valid), 

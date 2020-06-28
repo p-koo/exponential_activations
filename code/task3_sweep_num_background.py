@@ -12,7 +12,7 @@ model_name = 'cnn-dist'
 activations = ['relu', 'exponential']
 
 results_path = os.path.join('../results/', 'task3')
-params_path = os.path.join(results_path, 'params')
+params_path = os.path.join(results_path, 'model_params')
 
 #------------------------------------------------------------------------
 
@@ -60,7 +60,7 @@ for activation in activations:
             print('model: ' + name +'_'+str(num_background))
 
             # interpretability performance with deepshap
-            scores = explain.deepshap(model, X, class_index=0, layer=-2, 
+            scores = explain.deepshap(model, X, class_index=0, layer=-1, 
                                      num_background=num_background, reference='shuffle')
             scores *= X
             roc_score, pr_score = helper.interpretability_performance(X, scores, X_model)
@@ -71,7 +71,7 @@ for activation in activations:
 
 
             # interpretability performance with integrated gradients
-            scores = explain.integrated_grad(model, X, class_index=0, layer=-2, 
+            scores = explain.integrated_grad(model, X, class_index=0, layer=-1, 
                                              num_background=num_background, num_steps=20, 
                                              reference='shuffle')
             scores *= X
