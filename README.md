@@ -157,7 +157,7 @@ There are 6 main tasks and code is labeled accordingly. The description of each 
 	* plots a comparison of saliency maps for sequences with Residualbind with relu activations and exponential activations (saves to: task6/attr_plots)
 
 
-#### Other functions
+#### Other
 * helper.py
 	* functions that are useful to run analysis
 * tfomics
