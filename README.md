@@ -11,7 +11,6 @@ This repository contains datasets and scripts to reproduce results from "Improvi
 
 There are 6 main tasks and code is labeled accordingly. The description of each script is given below.
 
-
 #### Task 1 -- Classifying TF binding from synthetic data
 * task1_train_model.py
 	* trains models (CNN-4, CNN-25, and CNN-deep) with various activation functions on the task1 synthetic dataset for 10 different trials 
@@ -124,7 +123,7 @@ There are 6 main tasks and code is labeled accordingly. The description of each 
 
 #### Task 4 -- Classifying chromatin accessibility for DNase-seq data from the Basset dataset
 * task4_train_model.py
-	* trains a Basset model with relu and exponential activations on the full Basset dataset (data/er.h5) <-- Need to download dataset (10GB) via 
+	* trains a Basset model with relu and exponential activations on the full Basset dataset (data/er.h5) <-- Need to download dataset (10GB) via https://github.com/davek44/Basset
 	* model parameters saved to results/task4/model_params
 	* tests models on held-out test data 
 		* statistics saved to results/task4/task4_classification_performance.tsv 
@@ -158,5 +157,15 @@ There are 6 main tasks and code is labeled accordingly. The description of each 
 	* plots a comparison of saliency maps for sequences with Residualbind with relu activations and exponential activations (saves to: task6/attr_plots)
 
 
+#### Other functions
+* helper.py
+	* functions that are useful to run analysis
+* tfomics
+	* additional useful functions for NN models and interpretability
+* model_zoo
+	* CNN models used in this study
+* generate_data
+	* Notebooks used to generate data for Task 1, Task2, and Task3
+	
 
 
