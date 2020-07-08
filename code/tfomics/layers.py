@@ -1,9 +1,9 @@
 
 import tensorflow as tf
 from tensorflow import keras
-from keras import backend as K
+from tensorflow.keras import backend as K
 import numpy as np
-from keras.layers import Layer
+from tensorflow.keras.layers import Layer
 
 
 def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=True):

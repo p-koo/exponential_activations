@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from keras import backend as K
+from tensorflow.keras import backend as K
 import tensorflow.compat.v1.keras.backend as K1
 
 

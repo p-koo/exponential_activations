@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow import keras
-from keras import backend as K
+from tensorflow.keras import backend as K
 from tfomics import layers, utils
 
 def model(activation='log_relu', l2_norm=True):
