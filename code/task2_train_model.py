@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow import keras
 import helper
-from tfomics import utils, explain
+from tfomics import utils, explain, metrics
 
 #------------------------------------------------------------------------------------------------
 
