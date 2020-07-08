@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 import logomaker
 import matplotlib.pyplot as plt
+import tensorflow as tf
+tf.compat.v1.disable_eager_execution()
 from tensorflow import keras
 from tensorflow.keras import backend as K
 import tensorflow.compat.v1.keras.backend as K1

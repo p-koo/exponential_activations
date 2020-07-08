@@ -31,7 +31,7 @@ with open(file_path, 'w') as f:
         keras.backend.clear_session()
         
         # load model
-        model = basset.model(activation, nonlinear_output=True)
+        model = basset.model(activation)
         name = 'basset_'+activation
 
         # compile model
