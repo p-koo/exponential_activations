@@ -55,7 +55,7 @@ with open(file_path, 'w') as f:
         model.save_weights(weights_path)
 
         # get filter representations
-        intermediate = keras.Model(inputs=model.inputs, outputs=model.layers[-2].output)
+        intermediate = keras.Model(inputs=model.inputs, outputs=model.layers[3].output)
         fmap = intermediate.predict(x_test)
         W, support = explain.activation_pwm(fmap, x_test, threshold=0.5, window=20)
                   
