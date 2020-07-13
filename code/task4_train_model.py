@@ -57,7 +57,7 @@ with open(file_path, 'w') as f:
         # get filter representations
         intermediate = keras.Model(inputs=model.inputs, outputs=model.layers[3].output)
         fmap = intermediate.predict(x_test)
-        W, support = explain.activation_pwm(fmap, x_test, threshold=0.5, window=20)
+        W = explain.activation_pwm(fmap, x_test, threshold=0.5, window=20)
                   
         # clip filters about motif to reduce false-positive Tomtom matches 
         W_clipped = utils.clip_filters(W, threshold=0.5, pad=3)
