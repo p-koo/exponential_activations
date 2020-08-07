@@ -23,7 +23,7 @@ def model(activation='relu', input_shape=200, initialization=None):
                            kernel_size=19,  #200
                            padding='same', 
                            activation=activation, 
-                           kernel_initializer=initializer,
+                           kernel_initializer=initialization,
                            dropout=0.1,
                            l2=1e-6, 
                            bn=True)
