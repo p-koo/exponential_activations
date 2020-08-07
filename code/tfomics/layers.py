@@ -6,7 +6,7 @@ import numpy as np
 from tensorflow.keras.layers import Layer
 
 
-def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=True):
+def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=True, kernel_initializer=None):
     if l2:
         l2 = keras.regularizers.l2(l2)
     else:
@@ -15,7 +15,7 @@ def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=Tru
     nn = keras.layers.Dense(num_units, 
                             activation=None, 
                             use_bias=False,  
-                            kernel_initializer='he_normal',
+                            kernel_initializer=kernel_initializer,
                             bias_initializer='zeros', 
                             kernel_regularizer=l2, 
                             bias_regularizer=None,
@@ -31,7 +31,7 @@ def dense_layer(input_layer, num_units, activation, dropout=0.5, l2=None, bn=Tru
     return nn
 
 
-def conv_layer(inputs, num_filters, kernel_size, padding='same', activation='relu', dropout=0.2, l2=None, bn=True):
+def conv_layer(inputs, num_filters, kernel_size, padding='same', activation='relu', dropout=0.2, l2=None, bn=True, kernel_initializer=None):
     if l2:
         l2 = keras.regularizers.l2(l2)
     else:
@@ -43,7 +43,7 @@ def conv_layer(inputs, num_filters, kernel_size, padding='same', activation='rel
                              activation=None,
                              use_bias=False,
                              padding=padding,
-                             kernel_initializer='he_normal',
+                             kernel_initializer=kernel_initializer,
                              kernel_regularizer=l2, 
                              bias_regularizer=None, 
                              activity_regularizer=None,
