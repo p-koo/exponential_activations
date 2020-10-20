@@ -35,7 +35,7 @@ thresholds = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 num_trials = 10
 model_name = 'cnn-deep'
 activations = ['relu', 'exponential']
-results_path = utils.make_directory('../results_newest', 'task1')
+results_path = utils.make_directory('../results', 'task1')
 save_path = utils.make_directory(results_path, 'conv_filters_thresh')
 size = 32
 

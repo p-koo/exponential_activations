@@ -15,7 +15,7 @@ model_names = ['cnn-deep']
 activations = ['relu', 'exponential']
 
 # save path
-results_path = utils.make_directory('../results_newest', 'task1')
+results_path = utils.make_directory('../results', 'task1')
 params_path = utils.make_directory(results_path, 'model_params')
 save_path = utils.make_directory(results_path, 'conv_filters_thresh')
 
