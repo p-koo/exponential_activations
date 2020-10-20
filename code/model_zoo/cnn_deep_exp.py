@@ -1,8 +1,9 @@
 from tensorflow import keras
 from tfomics import layers, utils
+from tensorflow.keras import backend as K
 
 
-def model(activation='relu', input_shape=200, scale=1.):
+def model(input_shape=200, scale=1.):
 
     if input_shape == 1000:
         multiplier = 2
@@ -13,10 +14,9 @@ def model(activation='relu', input_shape=200, scale=1.):
     inputs = keras.layers.Input(shape=(input_shape,4))
         
     def exponential(x):
-        return K.relu(x*scale)
+        return K.exp(x*scale)
 
     # layer 1
-    activation = utils.activation_fn(activation)
     nn = layers.conv_layer(inputs,
                            num_filters=32*multiplier, 
                            kernel_size=19,  #200

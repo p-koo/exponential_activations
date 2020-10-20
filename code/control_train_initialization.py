@@ -23,7 +23,7 @@ save_path = utils.make_directory(results_path, 'conv_filters')
 
 # load dataset
 data_path = '../data/synthetic_dataset.h5'
-data = helper.load_dataset(data_path)
+data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 
@@ -32,7 +32,7 @@ with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
     for initialization in initializations:
-        for sigma in sigmas:
+        for activation in activations:
             trial_roc_mean = []
             trial_roc_std = []
             trial_pr_mean = []
@@ -41,7 +41,7 @@ with open(file_path, 'w') as f:
                 keras.backend.clear_session()
                     
                 # load model
-                model = cnn_deep.model(activation, input_shape=200, initialization=initialization)
+                model = cnn_deep_nobn.model(activation, input_shape=200, initialization=initialization)
 
                 base_name = model_name+'_'+activation+'_'+initialization
                 name = base_name+'_'+str(trial)

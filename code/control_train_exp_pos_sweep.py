@@ -4,26 +4,27 @@ import matplotlib.pyplot as plt
 from tensorflow import keras
 import helper
 from tfomics import utils, explain, metrics
+from six.moves import cPickle
+from model_zoo import cnn_deep_exp_pos
+from tensorflow.keras import backend as K
 
-from model_zoo import cnn_deep_exp
 #------------------------------------------------------------------------------------------------
 
 
 num_trials = 10
 model_name = 'cnn-deep'
-scales = [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 3, 4]
+scales = [-30, -20, -10, -5, -4, -3, -2, -1, -0.5, 0,  0.5, 1, 2, 3, 4, 5, 10, 15, 20]
 
 # save path
-results_path = utils.make_directory('../results', 'task1_exp_scale_sweep')
+results_path = utils.make_directory('../results', 'exp_pos_sweep')
 params_path = utils.make_directory(results_path, 'model_params')
 save_path = utils.make_directory(results_path, 'conv_filters')
-
 
 #------------------------------------------------------------------------------------------------
 
 # load dataset
 data_path = '../data/synthetic_dataset.h5'
-data = helper.load_dataset(data_path)
+data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
 
@@ -32,7 +33,6 @@ with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
     for scale in scales:
-
         results = []
         trial_roc_mean = []
         trial_roc_std = []
@@ -42,7 +42,7 @@ with open(file_path, 'w') as f:
             keras.backend.clear_session()
                 
             # load model
-            model = cnn_deep_exp.model(input_shape=200, initialization=keras.initializers.RandomNormal(mean=0.0, stddev=sigma))
+            model = cnn_deep_exp_pos.model(input_shape=200, scale=scale)
 
             base_name = model_name+'_'+str(scale)
             name = base_name+'_'+str(trial)
@@ -70,19 +70,19 @@ with open(file_path, 'w') as f:
                                                           mode='max',
                                                           verbose=1) 
 
+            # Define the Gradient Fucntion
+            epoch_gradient = []
             history = model.fit(x_train, y_train, 
                                 epochs=100,
                                 batch_size=100, 
                                 shuffle=True,
                                 validation_data=(x_valid, y_valid), 
-                                callbacks=[es_callback, reduce_lr])
+                                callbacks=[es_callback, reduce_lr])#, GradientCalcCallback()])
 
             # save model
             weights_path = os.path.join(params_path, name+'.hdf5')
             model.save_weights(weights_path)
-
-            results = model.evaluate(x_test, y_test, batch_size=512)      
-                      
+                    
             # get 1st convolution layer filters
             fig, W, logo = explain.plot_filers(model, x_test, layer=3, threshold=0.5, 
                                                window=20, num_cols=8, figsize=(30,5))
@@ -103,16 +103,17 @@ with open(file_path, 'w') as f:
             trial_roc_std.append(std_vals[1])
             trial_pr_mean.append(mean_vals[2])
             trial_pr_std.append(std_vals[2])
-            results.append(history)
+            vals = history.history
 
-        f.write("%s\t%.3f+/-%.3f\t%.3f+/-%.3f\n"%(base_name, 
-                                                  np.mean(trial_roc_mean),
-                                                  np.std(trial_roc_mean), 
-                                                  np.mean(trial_pr_mean),
-                                                  np.std(trial_pr_mean)))
+            results.append([vals['loss'], vals['auroc'], vals['aupr'], vals['val_loss'], vals['val_auroc'], vals['val_aupr']])
+        f.write("%s\t%.3f+/-%.3f\t%.3f+/-%.3f\n"%(name,
+                                                       np.mean(trial_roc_mean),
+                                                       np.std(trial_roc_mean),
+                                                       np.mean(trial_pr_mean),
+                                                       np.std(trial_pr_mean)))
+
 
         # pickle results
-        file_path = os.path.join(results_path, str(scale)+"_history.pickle")
-        with open(file_path, 'wb') as f:
-            cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
-
+        file_path = os.path.join(results_path, base_name+"_history.pickle")
+        with open(file_path, 'wb') as fout:
+            cPickle.dump(results, fout, protocol=cPickle.HIGHEST_PROTOCOL)
