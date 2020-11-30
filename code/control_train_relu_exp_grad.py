@@ -14,7 +14,7 @@ from model_zoo import cnn_deep
 
 num_trials = 1
 model_name = 'cnn-deep'
-activations = ['exponential']#, 'relu']
+activations = ['exponential', 'relu']
 
 # save path
 results_path = utils.make_directory('../results', 'exp_relu_grad')
