@@ -12,7 +12,7 @@ This repository contains datasets and scripts to reproduce results from "Improvi
 There are 6 main tasks and code is labeled accordingly. The description of each script is given below.
 
 #### Task 1 -- Classifying TF binding from synthetic data
-* task1_train_model.py
+* task1_step1_train_models.py
 	* trains models (CNN-4, CNN-25, and CNN-deep) with various activation functions on the task1 synthetic dataset for 10 different trials 
 		* dataset is in /data/syntehtic_dataset.h5
 		* to generate again, run code/generate_data/task1_generate_synthetic_dataset.ipynb
@@ -24,24 +24,24 @@ There are 6 main tasks and code is labeled accordingly. The description of each 
 		* plots saved to results/task1/conv_filters
 	* generates a meme file for 1st layer filters 
 		* files saved to results/task1/conv_filters
-* task1_tomtom.sh
+* task1_step2_tomtom.sh
 	* performs a tomtom motif comparison search of the 1st layer filter representations (meme files) against the JASPAR database (located in /data/JASPAR_CORE_2016_vertebrates.meme)
 		* results are stored in a directory in results/task1/conv_filters under: model_activation_trial
-* task1_filter_match.py
+* task1_step3_filter_match.py
 	* quantifies motif comparison results against the ground truth motifs from the synthetic dataset
 		* summary statistics saved to results/task1/task1_filter_results.tsv
 		* results for each trial saved to results/task1/task1_filter_results.pickle
-* task1_plot_filter_match_synthetic.ipynb
+* task1_step4_plot_filter_match.ipynb
 	* Plots comparison classification performance of each model and activation function (results/task1/task1_performance_roc.pdf and results/task1/task1_performance_pr.pdf)
 	* Plots comparison of filter match to relevant motifs in the Jaspar database for different activations (results/task1/task1_filter_match.pdf)
 	* Plots comparison of filter match to relevant motifs in the Jaspar database for modified activations (results/task1/task1_filter_match_modified_activations.pdf)
 	* Plots comparison of filter match to relevant motifs in the Jaspar database for an ablation study of modified activations (results/task1/task1_filter_match_ablation.pdf)
 	* Plots comparison of filter match to any motifs in the Jaspar database (results/task1/task1_filter_match_any_JASPAR.pdf)
-* task1_Plot_filters_with_hits.ipynb
+* task1_step5_plot_filters_with_hits.ipynb
 	* replots 1st layer filters with y-labels given by a tomtom hit to a ground truth motif (results/task1/conv_filters)
-* task1_PWM_scan_comparison.ipynb
+* task1_step6_PWM_scan_comparison.ipynb
 	* comparison of PWM scans vs CNN with exponential activations (saved to: results/task1/pwm_comparison)
-* task1_train_model_log.py
+* task1_log_analysis_step1_train.py
 	* trains models with log-based activation functions on the task1 synthetic dataset for 10 different trials 
 	* model parameters saved to results/task1/model_params
 	* tests each model on held-out test data 
@@ -51,17 +51,15 @@ There are 6 main tasks and code is labeled accordingly. The description of each 
 		* plots saved to results/task1/conv_filters
 	* generates a meme file for 1st layer filters 
 		* files saved to results/task1/conv_filters
-* task1_tomtom_log.sh
+* task1_log_analysis_step2_tomtom.sh
 	* performs a tomtom motif comparison search of the 1st layer filter representations (meme files) against the JASPAR database
 		* results are stored in a directory in results/task1/conv_filters under: model_activation_trial
-* task1_filter_match_log.py
+* task1_log_analysis_step3_filter_match.py
 	* quantifies motif comparison results against the ground truth motifs from the synthetic dataset
 		* summary statistics saved to results/task1/task1_filter_results_log.tsv
 		* results for each trial saved to results/task1/task1_filter_results_log.pickle
-* task1_plot_filter_match_synthetic-log.ipynb
+* task1_log_analysis_step4_plot_filter_match.ipynb
 	* 	* Plots comparison of filter match to relevant motifs in the Jaspar database for different activations (results/task1/task1_filter_match_log.pdf)
-* task1_plot_synthetic_filters_with_hits_log.ipynb
-	* replots 1st layer filters with y-labels given by a tomtom hit to a ground truth motif to results/task1/conv_filters
 
 
 #### Task 2 -- Classifying TF binding from in vivo data
