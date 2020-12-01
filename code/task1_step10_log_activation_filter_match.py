@@ -36,7 +36,7 @@ activations = ['log_relu', 'relu']
 l2_norm = [True, False]
 model_name = 'cnn-deep'
 
-results_path = os.path.join('../../results', 'task1')
+results_path = os.path.join('../results', 'task1')
 save_path = os.path.join(results_path, 'conv_filters')
 size = 32
 

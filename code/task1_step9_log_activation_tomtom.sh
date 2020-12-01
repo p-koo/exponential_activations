@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dirpath="../../results/task1/conv_filters"
+dirpath="../results/task1/conv_filters"
 
 for MODEL in cnn-deep
 do
@@ -8,7 +8,7 @@ do
 	do
 		for TRIAL in {0..9} 
 		do
-		    tomtom -evalue -thresh 0.1 -o $dirpath/${MODEL}_${ACTIVATION}_${TRIAL} $dirpath/${MODEL}_${ACTIVATION}_${TRIAL}.meme ../../data/JASPAR_CORE_2016_vertebrates.meme
+		    tomtom -evalue -thresh 0.1 -o $dirpath/${MODEL}_${ACTIVATION}_${TRIAL} $dirpath/${MODEL}_${ACTIVATION}_${TRIAL}.meme ../data/JASPAR_CORE_2016_vertebrates.meme
 		done
 	done
 done

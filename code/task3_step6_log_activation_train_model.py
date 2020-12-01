@@ -15,13 +15,13 @@ l2_norm = [True, False]
 model_name = 'cnn-dist'
 
 num_trials = 10
-results_path = utils.make_directory('../../results', 'task3')
+results_path = utils.make_directory('../results', 'task3')
 params_path = utils.make_directory(results_path, 'model_params')
 
 #------------------------------------------------------------------------
 
 # load dat3
-data_path = '../../data/synthetic_code_dataset.h5'
+data_path = '../data/synthetic_code_dataset.h5'
 data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
