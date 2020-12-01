@@ -11,13 +11,13 @@ num_trials = 10
 model_name = 'cnn-dist'
 activations = ['relu', 'exponential']
 
-results_path = os.path.join('../results/', 'task3')
+results_path = os.path.join('../../results/', 'task3')
 params_path = os.path.join(results_path, 'model_params')
 
 #------------------------------------------------------------------------
 
 # load data
-data_path = '../data/synthetic_code_dataset.h5'
+data_path = '../../data/synthetic_code_dataset.h5'
 data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 

@@ -15,14 +15,14 @@ model_names = ['cnn-deep']
 activations = ['relu', 'exponential']
 
 # save path
-results_path = utils.make_directory('../results', 'task1')
+results_path = utils.make_directory('../../results', 'task1')
 params_path = utils.make_directory(results_path, 'model_params')
-save_path = utils.make_directory(results_path, 'conv_filters_thresh')
+save_path = utils.make_directory(results_path, 'conv_filters_threshold_sweep')
 
 #------------------------------------------------------------------------------------------------
 
 # load dataset
-data_path = '../data/synthetic_dataset.h5'
+data_path = '../../data/synthetic_dataset.h5'
 data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 

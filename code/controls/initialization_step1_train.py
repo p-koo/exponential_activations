@@ -12,10 +12,9 @@ from model_zoo import cnn_deep
 activations = ['relu', 'exp']
 num_trials = 10
 model_name = 'cnn-deep'
-sigmas = [0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.75, 1.0, 2.0, 3, 4, 5]
-
+initializations = ['glorot_normal', 'glorot_uniform', 'he_normal', 'he_uniform', 'lecun_normal', 'lecun_uniform']
 # save path
-results_path = utils.make_directory('../results', 'initialization_sweep')
+results_path = utils.make_directory('../../results', 'initialization')
 params_path = utils.make_directory(results_path, 'model_params')
 save_path = utils.make_directory(results_path, 'conv_filters')
 
@@ -23,7 +22,7 @@ save_path = utils.make_directory(results_path, 'conv_filters')
 #------------------------------------------------------------------------------------------------
 
 # load dataset
-data_path = '../data/synthetic_dataset.h5'
+data_path = '../../data/synthetic_dataset.h5'
 data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 
@@ -32,8 +31,8 @@ file_path = os.path.join(results_path, 'performance_initializations.tsv')
 with open(file_path, 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'ave roc', 'ave pr'))
 
-    for activation in activations:
-        for sigma in sigmas:
+    for initialization in initializations:
+        for activation in activations:
             trial_roc_mean = []
             trial_roc_std = []
             trial_pr_mean = []
@@ -42,9 +41,9 @@ with open(file_path, 'w') as f:
                 keras.backend.clear_session()
                     
                 # load model
-                model = cnn_deep_nobn.model(activation, input_shape=200, initialization=keras.initializers.RandomNormal(mean=0.0, stddev=sigma))
+                model = cnn_deep.model(activation, input_shape=200, initialization=initialization)
 
-                base_name = model_name+'_'+activation+'_'+str(sigma)
+                base_name = model_name+'_'+activation+'_'+initialization
                 name = base_name+'_'+str(trial)
                 print('model: ' + name)
 

@@ -17,7 +17,7 @@ model_name = 'cnn-deep'
 activations = ['exponential', 'relu']
 
 # save path
-results_path = utils.make_directory('../results', 'exp_relu_grad')
+results_path = utils.make_directory('../../results', 'gradient_analysis')
 params_path = utils.make_directory(results_path, 'model_params')
 save_path = utils.make_directory(results_path, 'conv_filters')
 
@@ -40,7 +40,7 @@ class GradientCalcCallback(keras.callbacks.Callback):
 #------------------------------------------------------------------------------------------------
 
 # load dataset
-data_path = '../data/synthetic_dataset.h5'
+data_path = '../../data/synthetic_dataset.h5'
 data = helper.load_data(data_path)
 x_train, y_train, x_valid, y_valid, x_test, y_test = data
 

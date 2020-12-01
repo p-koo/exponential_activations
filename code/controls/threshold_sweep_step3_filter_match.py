@@ -30,53 +30,48 @@ motifnames = [ '','arid3', 'cebpb', 'fosl1', 'gabpa', 'mafk', 'max', 'mef2a', 'n
 #----------------------------------------------------------------------------------------------------
 
 
+thresholds = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
 num_trials = 10
 model_name = 'cnn-deep'
 activations = ['relu', 'exponential']
-
-scales = [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 3, 4, 5]
-
-results_path = utils.make_directory('../results', 'exp_scale_sweep_real')
-save_path = utils.make_directory(results_path, 'conv_filters')
+results_path = utils.make_directory('../../results', 'task1')
 size = 32
 
 # save results to file
-with open(os.path.join(results_path, 'filter_results.tsv'), 'w') as f:
+with open(os.path.join(results_path, 'threshold_sweep_filter_results.tsv'), 'w') as f:
     f.write('%s\t%s\t%s\n'%('model', 'match JASPAR', 'match ground truth'))
 
     results = {}
-    for scale in scales:
+    for activation in activations:
+        results[activation] = {}
+        for thresh in thresholds:
             trial_match_any = []
             trial_qvalue = []
             trial_match_fraction = []
             trial_coverage = []
             for trial in range(num_trials):
-                try:
-                    file_path = os.path.join(save_path, model_name+'_'+str(scale)+'_'+str(trial), 'tomtom.tsv')
-                    best_qvalues, best_match, min_qvalue, match_fraction, match_any  = helper.match_hits_to_ground_truth(file_path, motifs, size)
-		    # store results
-                    trial_qvalue.append(min_qvalue)
-                    trial_match_fraction.append(match_fraction)
-                    trial_coverage.append((len(np.where(min_qvalue != 1)[0])-1)/12) # percentage of motifs that are covered
-                    trial_match_any.append(match_any)
-                except:
-                    trial_qvalue.append(0)
-                    trial_match_fraction.append(0)
-                    trial_coverage.append(0) # percentage of motifs that are covered
-                    trial_match_any.append(0)
-                    
-            f.write("%s\t%.3f+/-%.3f\t%.3f+/-%.3f\n"%(model_name+'_'+str(scale), 
+
+                file_path = os.path.join(save_path, model_name+'_'+activation+'_'+str(thresh)+'_'+str(trial), 'tomtom.tsv')
+                best_qvalues, best_match, min_qvalue, match_fraction, match_any  = helper.match_hits_to_ground_truth(file_path, motifs, size)
+
+                # store results
+                trial_qvalue.append(min_qvalue)
+                trial_match_fraction.append(match_fraction)
+                trial_coverage.append((len(np.where(min_qvalue != 1)[0])-1)/12) # percentage of motifs that are covered
+                trial_match_any.append(match_any)
+
+            f.write("%s\t%.3f+/-%.3f\t%.3f+/-%.3f\n"%(model_name+'_'+activation, 
                                                       np.mean(trial_match_any), 
                                                       np.std(trial_match_any),
                                                       np.mean(trial_match_fraction), 
                                                       np.std(trial_match_fraction) ) )
-            results[scale] = {}
-            results[scale]['match_fraction'] = np.array(trial_match_fraction)
-            results[scale]['match_any'] = np.array(trial_match_any)
+            results[activation][thresh] = {}
+            results[activation][thresh]['match_fraction'] = np.array(trial_match_fraction)
+            results[activation][thresh]['match_any'] = np.array(trial_match_any)
             
 # pickle results
-file_path = os.path.join(results_path, "intialization_sweep_filter_results.pickle")
+file_path = os.path.join(results_path, "threshold_sweep_filter_results.pickle")
 with open(file_path, 'wb') as f:
     cPickle.dump(results, f, protocol=cPickle.HIGHEST_PROTOCOL)
 
